@@ -40,3 +40,27 @@
 .read-the-docs {
   color: #888;
 }
+/* Власні стилі для логотипа */
+.custom-logo {
+  width: 120px;
+  margin: 0 auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.custom-logo:hover {
+  transform: rotate(360deg);
+}
+
+/* Стилі для кнопок */
+.custom-button {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.custom-button:hover {
+  background-color: #45a049;
+}
