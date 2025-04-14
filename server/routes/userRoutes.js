@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/userModel"); //  модель користувача
-
+const sequelize = require("../config/db.config"); //  конфігурація бази даних
+const cors = require("cors");
 const router = express.Router();
 
 // Створення користувача (POST)

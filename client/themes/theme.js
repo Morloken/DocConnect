@@ -3,13 +3,13 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#455A64', // основний колір
+      main: '#4d79ff', // основний колір
     },
     secondary: {
-      main: '#d32f2f', //  вторинний колір
+      main: '#abdbe3', //  вторинний колір
     },
     background: {
-      default: '#f4f6f8', // Основний фон
+      default: '#063970', // Основний фон
     },
   },
   typography: {
