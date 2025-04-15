@@ -3,7 +3,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '../themes/theme'; // Тема для MUI
 import { CssBaseline, Container } from '@mui/material';
 import RegisterPage from '../Pages/RegisterPage'; // Сторінка реєстрації
-import HomePage from '../Pages/HomePage'; // Головна сторінка (поки що пуста)
+import HomePage from '../Pages/HomePage'; // Головна сторінка
+import LoginPage from '../Pages/LoginPage'; 
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         <CssBaseline />
         <Container>
           <Routes>
-            <Route path="/" element={<RegisterPage />} /> {/* Сторінка реєстрації */}
+            <Route path="/register" element={<RegisterPage />} /> {/* Сторінка реєстрації */}
+          <Route path="/login" element={<LoginPage />} />  {/* Сторінка входу */}
             <Route path="/home" element={<HomePage />} />  {/* Головна сторінка */}
           </Routes>
         </Container>

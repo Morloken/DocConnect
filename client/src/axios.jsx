@@ -1,9 +1,17 @@
-// client/src/axios.js
-import axios from 'axios';
+import axios from "axios";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000', //  бекенд
-  withCredentials: true, //   куки
+  baseURL: "http://localhost:5000",
+  withCredentials: true,
+});
+
+// Додаємо токен до кожного запиту
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default instance;

@@ -8,21 +8,29 @@ import MedicationIcon from '@mui/icons-material/Medication';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import axios from '../src/axios.jsx'; // Ваш axios
-
+import LogOutButton from '../src/components/logOutButton.jsx';
 import UserProfileCard from '../src/components/UserProfileCard.jsx';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
-  // Отримуємо дані користувача
+  // Оновлений: Отримуємо дані користувача
   useEffect(() => {
-    const userId = 1; // Тут потрібно вказати правильний id, якщо потрібно
-    axios.get(`/users/${userId}`).then((response) => {
-      setUser(response.data); // Зберігаємо дані користувача в стан
-    }).catch((error) => {
-      console.error("Помилка при отриманні даних користувача", error);
-    });
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('/users/me', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Оновлено: передача токену через заголовок
+          },
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error("Помилка при отриманні даних користувача", error);
+      }
+    };
+
+    fetchUser();
   }, []);
 
   return (
@@ -71,8 +79,8 @@ const HomePage = () => {
                 >
                   Редагувати профіль
                 </Button>
+                <LogOutButton setUser={setUser} />
 
-                {/* Передача даних користувача в UserProfileCard */}
                 {user && (
                   <Box mt={4}>
                     <UserProfileCard user={user} />
