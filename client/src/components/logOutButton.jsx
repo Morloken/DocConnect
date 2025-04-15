@@ -14,7 +14,7 @@ const LogOutButton = ({ setUser }) => {
   };
 
   return (
-    <Button variant="contained" color="primary" onClick={handleLogout} sx={{ mt: 2 }}>
+    <Button variant="contained" color="secondary" onClick={handleLogout} sx={{ mt: 2, px: '2vw', py: '1vh', fontSize: 'clamp(0.4rem, 0.8vw, 0.8rem)', borderRadius: '0.8rem' }}>
       Вийти
     </Button>
   );
