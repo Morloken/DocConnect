@@ -8,23 +8,34 @@ require("dotenv").config();
 
 const app = express();
 
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (!origin || origin === "http://localhost:5173") {
+//       callback(null, true); // Allow requests from the frontend
+//     } else {
+//       callback(new Error("Not allowed by CORS")); // Block other origins
+//     }
+//   },
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   credentials: true, // Allow cookies and credentials
+//   exposedHeaders: ["Set-Cookie"],
+//   maxAge: 3600,
+// };
+
+// // Use CORS globally
+// app.use(cors(corsOptions));
+// ==== CORS FIX ====
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || origin === "http://localhost:5173") {
-      callback(null, true); // Allow requests from the frontend
-    } else {
-      callback(new Error("Not allowed by CORS")); // Block other origins
-    }
-  },
+  origin: "http://localhost:5173", //  Дозволити тільки фронтенд
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true, // Allow cookies and credentials
+  credentials: true,
   exposedHeaders: ["Set-Cookie"],
-  maxAge: 3600,
 };
 
-// Use CORS globally
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); //  ДО ВСІХ РОУТІВ
+// ===================
 
 // Middleware для парсингу JSON
 app.use(express.json());
