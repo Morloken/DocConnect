@@ -4,6 +4,7 @@ const { sequelize, DataTypes } = require('../config/db.config'); // Імпорт
 const Appointment = require('../models/Appointment');
 
 
+
 const router = express.Router();
 // const jwt = require('jsonwebtoken');
 const authenticate = require('../middleware/authenticate');
@@ -47,6 +48,21 @@ router.post('/', authenticate, async (req, res) => {
     res.status(500).send({ message: 'Щось пішло не так!' });
   }
 });
+
+
+// Отримання всіх записів на прийом
+router.get('/', authenticate, async (req, res) => {
+  try {
+    const appointments = await Appointment.findAll({
+      where: { patient_id: req.userId }, // Отримуємо записи лише для поточного користувача
+    });
+    res.json(appointments);
+  } catch (error) {
+    console.error("Помилка при отриманні записів:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 
 module.exports = router;

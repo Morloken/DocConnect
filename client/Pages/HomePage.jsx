@@ -38,17 +38,42 @@ const HomePage = () => {
     fetchUser();
   }, []);
 
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.get("/appointments", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        console.log("Appointments:", response.data); // Перевірка даних
+        if (response.data) {
+          setAppointments(response.data); // Зберігаємо записи, якщо вони є
+        }
+      } catch (error) {
+        console.error("Помилка при отриманні записів", error);
+      }
+    };
+
+    if (user) {
+      // Переконуємось, що користувач завантажений перед запитом записів
+      fetchAppointments();
+    }
+  }, [user]); // Залежність від користувача
+
+  const [appointments, setAppointments] = useState([]);
+
   return (
     <Box
-  sx={{
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh",
-    width: "100%",
-    background: "linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%)",
-  }}
->
-
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        width: "100%",
+        background:
+          "linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%)",
+      }}
+    >
       {/* Hero Section + User Info */}
       <Box
         sx={{
@@ -147,9 +172,9 @@ const HomePage = () => {
       </Box>
 
       {/* Main Content Section */}
-      <Box sx={{ flexGrow: 1, px: { xs: "5vw", md: "8vw" }, py: "5vh" }}>
-        {/* Додатковий контент сайту */}
-        <Grid container spacing={3}>
+      {/* <Box sx={{ flexGrow: 1, px: { xs: "5vw", md: "8vw" }, py: "5vh" }}> */}
+      {/* Додатковий контент сайту */}
+      {/* <Grid container spacing={3}>
           <Grid item xs={20} md={3}>
             <Paper sx={{ p: 3, textAlign: "center" }}>
               <Typography variant="h5" sx={{ mb: 2 }}>
@@ -179,9 +204,14 @@ const HomePage = () => {
                 Зберігайте та переглядайте вашу історію хвороб онлайн.
               </Typography>
             </Paper>
-          </Grid>
+          </Grid> 
+
+
+
+
           {/* Additional Site Content */}
-          <Grid item xs={12} md={4}>
+
+      {/* <Grid item xs={12} md={4}>
             <Paper sx={{ p: 3, textAlign: "center" }}>
               <Typography variant="h5" sx={{ mb: 2 }}>
                 Партнери
@@ -212,127 +242,147 @@ const HomePage = () => {
             </Paper>
           </Grid>
         </Grid>
-      </Box>
+      </Box> */}
+
       {/* My Appointments Section */}
-<Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh" }}>
-  <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
-    Мої записи
-  </Typography>
-  <Grid container spacing={3}>
-    {[1, 2].map((item) => (
-      <Grid item xs={12} md={6} key={item}>
-        <Paper sx={{ p: 3 }}>
-          <Typography variant="h6">Прийом у терапевта</Typography>
-          <Typography variant="body2" color="text.secondary">
-            Дата: 20 травня 2025, 14:00
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Лікар: Іваненко Ольга Сергіївна
-          </Typography>
-          <Button
-            variant="text"
-            size="small"
-            sx={{ mt: 1 }}
-            onClick={() => navigate("/appointments")}
-          >
-            Детальніше
-          </Button>
-        </Paper>
-      </Grid>
-    ))}
-  </Grid>
-</Box>
+      <Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh" }}>
+        <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+          Мої записи
+        </Typography>
+        <Grid container spacing={3}>
+          {appointments.length > 0 ? (
+            appointments.map((appointment) => (
+              <Grid item xs={12} md={6} key={appointment.id}>
+                <Paper sx={{ p: 3 }}>
+                  <Typography variant="h6">{appointment.specialty}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Дата:{" "}
+                    {appointment.appointment_time
+                      ? new Date(
+                          appointment.appointment_time
+                        ).toLocaleDateString()
+                      : "Невідома дата"}
+                    ,
+                    {appointment.appointment_time
+                      ? new Date(
+                          appointment.appointment_time
+                        ).toLocaleTimeString()
+                      : "Невідомий час"}
+                  </Typography>
 
-{/* Recommended Doctors Section */}
-<Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh", bgcolor: "#e3f2fd" }}>
-  <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
-    Рекомендовані лікарі
-  </Typography>
-  <Grid container spacing={3}>
-    {[1, 2, 3].map((doc) => (
-      <Grid item xs={12} md={4} key={doc}>
-        <Card sx={{ p: 2 }}>
-          <Box display="flex" alignItems="center" gap={2}>
-            <Avatar sx={{ width: 56, height: 56 }}>ДК</Avatar>
-            <Box>
-              <Typography variant="subtitle1" fontWeight="bold">
-                Дорошенко Катерина
+                  <Typography variant="body2" color="text.secondary">
+                    Лікар: {appointment.doctorName}
+                  </Typography>
+                  <Button
+                    variant="text"
+                    size="small"
+                    sx={{ mt: 1 }}
+                    onClick={() => navigate(`/appointments/${appointment.id}`)} // переходимо на сторінку деталей прийому
+                  >
+                    Детальніше
+                  </Button>
+                  <Divider sx={{ my: 2 }} />
+                  <Typography variant="body2" color="text.secondary">
+                    {appointment.symptoms
+                      ? appointment.symptoms.split(" ").slice(0, 5).join(" ")
+                      : "Без симптомів"}
+                  </Typography>
+                  
+                </Paper>
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              Немає записів для відображення
+            </Typography>
+          )}
+        </Grid>
+      </Box>
+
+      {/* Recommended Doctors Section */}
+      <Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh", bgcolor: "#e3f2fd" }}>
+        <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+          Рекомендовані лікарі
+        </Typography>
+        <Grid container spacing={3}>
+          {[1, 2, 3].map((doc) => (
+            <Grid item xs={12} md={4} key={doc}>
+              <Card sx={{ p: 2 }}>
+                <Box display="flex" alignItems="center" gap={2}>
+                  <Avatar sx={{ width: 56, height: 56 }}>ДК</Avatar>
+                  <Box>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Дорошенко Катерина
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Кардіолог, клініка "МедЛайф"
+                    </Typography>
+                  </Box>
+                </Box>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 2, borderRadius: "1.5rem" }}
+                  onClick={() => navigate("/appointments")}
+                >
+                  Записатись
+                </Button>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      {/* Quick Actions Section */}
+      <Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh" }}>
+        <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+          Швидкі дії
+        </Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Новий запис
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Кардіолог, клініка "МедЛайф"
+              <Button
+                onClick={() => navigate("/appointments")}
+                variant="outlined"
+                fullWidth
+              >
+                Обрати лікаря
+              </Button>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Медична карта
               </Typography>
-            </Box>
-          </Box>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ mt: 2, borderRadius: "1.5rem" }}
-            onClick={() => navigate("/appointments")}
-          >
-            Записатись
-          </Button>
-        </Card>
-      </Grid>
-    ))}
-  </Grid>
-</Box>
-
-{/* Quick Actions Section */}
-<Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh" }}>
-  <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
-    Швидкі дії
-  </Typography>
-  <Grid container spacing={3}>
-    <Grid item xs={12} md={4}>
-      <Paper sx={{ p: 3, textAlign: "center" }}>
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Новий запис
-        </Typography>
-        <Button
-          onClick={() => navigate("/appointments")}
-          variant="outlined"
-          fullWidth
-        >
-          Обрати лікаря
-        </Button>
-      </Paper>
-    </Grid>
-    <Grid item xs={12} md={4}>
-      <Paper sx={{ p: 3, textAlign: "center" }}>
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Медична карта
-        </Typography>
-        <Button
-          onClick={() => navigate("/medical-records")}
-          variant="outlined"
-          fullWidth
-        >
-          Переглянути
-        </Button>
-      </Paper>
-    </Grid>
-    <Grid item xs={12} md={4}>
-      <Paper sx={{ p: 3, textAlign: "center" }}>
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Повідомлення
-        </Typography>
-        <Button
-          onClick={() => navigate("/notifications")}
-          variant="outlined"
-          fullWidth
-        >
-          Перевірити
-        </Button>
-      </Paper>
-    </Grid>
-  </Grid>
-</Box>
-
-
-
-
-
-
+              <Button
+                onClick={() => navigate("/medical-records")}
+                variant="outlined"
+                fullWidth
+              >
+                Переглянути
+              </Button>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Повідомлення
+              </Typography>
+              <Button
+                onClick={() => navigate("/notifications")}
+                variant="outlined"
+                fullWidth
+              >
+                Перевірити
+              </Button>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
 
       {/* Additional Content Section */}
       <Box
@@ -414,5 +464,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-

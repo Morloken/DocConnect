@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const sequelize = require("./config/db.config");
 const userRoutes = require("./routes/userRoutes");
+const appointmentRoutes = require("./routes/appointmentRoutes");
 
 const app = express();
 
@@ -30,10 +31,22 @@ sequelize.sync({ alter: true })
 // Роутинг
 app.use("/users", userRoutes);
 
-const appointmentRoutes = require("./routes/appointmentRoutes");
+
 //  роут для записів на прийом
 app.use("/appointments", appointmentRoutes);
 
+
+
+// // роут для отримання записів на прийом
+// app.get("/appointments", async (req, res) => {
+//   try {
+//     const appointments = await appointmentRoutes.findAll();
+//     res.json(appointments);
+//   } catch (error) {
+//     console.error("Error fetching appointments:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
 
 
 // Запуск сервера
