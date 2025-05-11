@@ -30,6 +30,12 @@ sequelize.sync({ alter: true })
 // Роутинг
 app.use("/users", userRoutes);
 
+const appointmentRoutes = require("./routes/appointmentRoutes");
+//  роут для записів на прийом
+app.use("/appointments", appointmentRoutes);
+
+
+
 // Запуск сервера
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

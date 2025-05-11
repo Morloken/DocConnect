@@ -1,5 +1,5 @@
 
-const { Sequelize, DataTypes } = require('sequelize');
+const {  DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config'); // Імпортуємо налаштування підключення до БД
 
 // Описуємо модель User

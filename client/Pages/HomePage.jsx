@@ -40,14 +40,15 @@ const HomePage = () => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        width: "100%",
-        bgcolor: "#f0f4f8",
-      }}
-    >
+  sx={{
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+    width: "100%",
+    background: "linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%)",
+  }}
+>
+
       {/* Hero Section + User Info */}
       <Box
         sx={{
@@ -93,7 +94,6 @@ const HomePage = () => {
               py: "1vh",
               fontSize: "clamp(0.9rem, 1.5vw, 1.2rem)",
               borderRadius: "1.5rem",
-              
             }}
           >
             Записатись на прийом
@@ -146,9 +146,250 @@ const HomePage = () => {
         </Box>
       </Box>
 
-      {/* Резервний простір для контенту, якщо знадобиться */}
+      {/* Main Content Section */}
       <Box sx={{ flexGrow: 1, px: { xs: "5vw", md: "8vw" }, py: "5vh" }}>
-        {/* Можна додати додаткові компоненти/блоки у майбутньому */}
+        {/* Додатковий контент сайту */}
+        <Grid container spacing={3}>
+          <Grid item xs={20} md={3}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                Наші Послуги
+              </Typography>
+              <Typography variant="body1">
+                Ми надаємо широкий спектр медичних послуг для вашого здоров'я.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                Консультації
+              </Typography>
+              <Typography variant="body1">
+                Отримайте консультації від провідних фахівців.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                Історія Хвороб
+              </Typography>
+              <Typography variant="body1">
+                Зберігайте та переглядайте вашу історію хвороб онлайн.
+              </Typography>
+            </Paper>
+          </Grid>
+          {/* Additional Site Content */}
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                Партнери
+              </Typography>
+              <Typography variant="body1">
+                Ми співпрацюємо з провідними медичними установами.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                Контакти
+              </Typography>
+              <Typography variant="body1">
+                Зв'яжіться з нами для отримання додаткової інформації.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                Відгуки
+              </Typography>
+              <Typography variant="body1">
+                Прочитайте відгуки наших клієнтів та поділіться своїми враженнями.
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+      {/* My Appointments Section */}
+<Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh" }}>
+  <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+    Мої записи
+  </Typography>
+  <Grid container spacing={3}>
+    {[1, 2].map((item) => (
+      <Grid item xs={12} md={6} key={item}>
+        <Paper sx={{ p: 3 }}>
+          <Typography variant="h6">Прийом у терапевта</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Дата: 20 травня 2025, 14:00
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Лікар: Іваненко Ольга Сергіївна
+          </Typography>
+          <Button
+            variant="text"
+            size="small"
+            sx={{ mt: 1 }}
+            onClick={() => navigate("/appointments")}
+          >
+            Детальніше
+          </Button>
+        </Paper>
+      </Grid>
+    ))}
+  </Grid>
+</Box>
+
+{/* Recommended Doctors Section */}
+<Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh", bgcolor: "#e3f2fd" }}>
+  <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+    Рекомендовані лікарі
+  </Typography>
+  <Grid container spacing={3}>
+    {[1, 2, 3].map((doc) => (
+      <Grid item xs={12} md={4} key={doc}>
+        <Card sx={{ p: 2 }}>
+          <Box display="flex" alignItems="center" gap={2}>
+            <Avatar sx={{ width: 56, height: 56 }}>ДК</Avatar>
+            <Box>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Дорошенко Катерина
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Кардіолог, клініка "МедЛайф"
+              </Typography>
+            </Box>
+          </Box>
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, borderRadius: "1.5rem" }}
+            onClick={() => navigate("/appointments")}
+          >
+            Записатись
+          </Button>
+        </Card>
+      </Grid>
+    ))}
+  </Grid>
+</Box>
+
+{/* Quick Actions Section */}
+<Box sx={{ px: { xs: "5vw", md: "8vw" }, py: "5vh" }}>
+  <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+    Швидкі дії
+  </Typography>
+  <Grid container spacing={3}>
+    <Grid item xs={12} md={4}>
+      <Paper sx={{ p: 3, textAlign: "center" }}>
+        <Typography variant="h6" sx={{ mb: 1 }}>
+          Новий запис
+        </Typography>
+        <Button
+          onClick={() => navigate("/appointments")}
+          variant="outlined"
+          fullWidth
+        >
+          Обрати лікаря
+        </Button>
+      </Paper>
+    </Grid>
+    <Grid item xs={12} md={4}>
+      <Paper sx={{ p: 3, textAlign: "center" }}>
+        <Typography variant="h6" sx={{ mb: 1 }}>
+          Медична карта
+        </Typography>
+        <Button
+          onClick={() => navigate("/medical-records")}
+          variant="outlined"
+          fullWidth
+        >
+          Переглянути
+        </Button>
+      </Paper>
+    </Grid>
+    <Grid item xs={12} md={4}>
+      <Paper sx={{ p: 3, textAlign: "center" }}>
+        <Typography variant="h6" sx={{ mb: 1 }}>
+          Повідомлення
+        </Typography>
+        <Button
+          onClick={() => navigate("/notifications")}
+          variant="outlined"
+          fullWidth
+        >
+          Перевірити
+        </Button>
+      </Paper>
+    </Grid>
+  </Grid>
+</Box>
+
+
+
+
+
+
+
+      {/* Additional Content Section */}
+      <Box
+        sx={{
+          px: { xs: "5vw", md: "8vw" },
+          py: "5vh",
+          bgcolor: "#e3f2fd",
+          borderRadius: "1.5rem",
+        }}
+      >
+        <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+          Додаткові можливості
+        </Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Переглянути записи
+              </Typography>
+              <Button
+                onClick={() => navigate("/appointments")}
+                variant="outlined"
+                fullWidth
+              >
+                Переглянути
+              </Button>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Переглянути записи
+              </Typography>
+              <Button
+                onClick={() => navigate("/appointments")}
+                variant="outlined"
+                fullWidth
+              >
+                Переглянути
+              </Button>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 3, textAlign: "center" }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Переглянути записи
+              </Typography>
+              <Button
+                onClick={() => navigate("/appointments")}
+                variant="outlined"
+                fullWidth
+              >
+                Переглянути
+              </Button>
+            </Paper>
+          </Grid>
+        </Grid>
       </Box>
 
       {/* Footer */}
@@ -173,3 +414,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
