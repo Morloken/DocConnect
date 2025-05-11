@@ -271,7 +271,7 @@ const HomePage = () => {
                   </Typography>
 
                   <Typography variant="body2" color="text.secondary">
-                    Лікар: {appointment.doctorName}
+                    Лікар: {appointment.doctor_id || "Інформація відсутня"}
                   </Typography>
                   <Button
                     variant="text"

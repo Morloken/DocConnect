@@ -7,6 +7,7 @@ import HomePage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
 import UserProfile from '../Pages/UserProfile';
 import AppointmentPage from '../Pages/AppointmentPage';
+import AppointmentDetail from '../src/components/AppointmentDetail';
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
             <Route path="/home" element={<HomePage />} />  {/* Головна сторінка */}
             <Route path="/profile" element={<UserProfile />} />  {/* Профіль користувача */}
             <Route path="/appointments" element={<AppointmentPage />} />  {/* Сторінка запису на прийом */}
+
+            <Route path="/appointments/:id" element={<AppointmentDetail />} /> {/* Сторінка деталей запису на прийом */}
         </Routes>
       </ThemeProvider>
     </Router>
