@@ -54,12 +54,12 @@ const AppointmentPage = () => {
     console.log('Form Data перед відправкою:', formData);  
 
   return (
-    <Box sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
+    <Box sx={{ p: 4, maxWidth: 500, mx: 'auto', color: 'white' }}>
       <Typography variant="h4" gutterBottom>Запис на прийом</Typography>
 
       {step === 1 && (
-        <Box>
-          <TextField
+        <Box >
+          <TextField sx={{  color : 'white' }}
             select
             label="Оберіть лікаря (ID)"
             value={formData.doctor_id}
@@ -84,7 +84,7 @@ const AppointmentPage = () => {
 
       {step === 2 && (
         <Box>
-          <TextField
+          <TextField sx={{  color : 'white' }}
             type="datetime-local"
             label="Дата та час прийому"
             InputLabelProps={{ shrink: true }}

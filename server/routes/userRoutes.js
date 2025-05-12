@@ -3,9 +3,13 @@ const express = require("express");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Doctor = require("../models/doctorModel");
+
 
 const router = express.Router();
 const authenticate = require("../middleware/authenticate");
+
+const axios = require("axios");
 
 // -------------------- Логін --------------------
 router.post("/login", async (req, res) => {
@@ -13,10 +17,12 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
 
-    if (!user) return res.status(400).json({ message: "Невірний email або пароль" });
+    if (!user)
+      return res.status(400).json({ message: "Невірний email або пароль" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Невірний email або пароль" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Невірний email або пароль" });
 
     const token = jwt.sign({ id: user.id }, "secret-key", { expiresIn: "1d" });
     res.json({ token });
@@ -27,13 +33,45 @@ router.post("/login", async (req, res) => {
 });
 
 // -------------------- Реєстрація --------------------
+// router.post("/register", async (req, res) => {
+//   try {
+//     const { name, email, password } = req.body;
+
+//     const existingUser = await User.findOne({ where: { email } });
+//     if (existingUser) {
+//       return res.status(400).json({ message: "Користувач з таким email вже існує" });
+//     }
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     const newUser = await User.create({
+//       name,
+//       email,
+//       password: hashedPassword,
+//       createdAt: new Date(),
+//       updatedAt: new Date(),
+//     });
+
+//     const { password: _, ...userData } = newUser.toJSON();
+//     res.status(201).json({
+//       message: "Користувача створено успішно",
+//       user: userData,
+//     });
+//   } catch (error) {
+//     console.error("Помилка при створенні користувача:", error);
+//     res.status(500).send("Помилка сервера під час створення користувача");
+//   }
+// });
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role, specialty, hospital, licensenumber } =
+      req.body;
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ message: "Користувач з таким email вже існує" });
+      return res
+        .status(400)
+        .json({ message: "Користувач з таким email вже існує" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -42,9 +80,27 @@ router.post("/register", async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role: role || "patient", // За замовчуванням роль - пацієнт
+      services: "",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    // Якщо лікар – передаємо додаткову інфу в doctorRoutes
+    if (role === "doctor") {
+      if (!specialty || !hospital || !licensenumber) {
+        return res.status(400).json({ message: "Всі поля лікаря є обов’язковими" });
+      }
+
+      await Doctor.create({
+        name,
+        email,
+        specialty,
+        hospital,
+        licensenumber
+        
+      });
+    }
 
     const { password: _, ...userData } = newUser.toJSON();
     res.status(201).json({
@@ -99,3 +155,4 @@ router.get("/:id", authenticate, async (req, res) => {
 });
 
 module.exports = router;
+

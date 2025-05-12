@@ -2,8 +2,12 @@ require("dotenv").config(); // Завантажуємо конфігурацій
 const express = require("express");
 const cors = require("cors");
 const sequelize = require("./config/db.config");
-const userRoutes = require("./routes/userRoutes");
+const userRoutes  = require("./routes/userRoutes");
+// const User = require("./models/userModel");
+// const Doctor = require("./models/doctorModel");
+const doctorRoutes = require("./routes/doctorRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
+
 
 const app = express();
 
@@ -34,6 +38,11 @@ app.use("/users", userRoutes);
 
 //  роут для записів на прийом
 app.use("/appointments", appointmentRoutes);
+
+//  роут для реєстрації лікарів
+ app.use("/doctors", doctorRoutes);
+
+
 
 
 

@@ -62,8 +62,13 @@ const LoginPage = () => {
           Увійти
         </Button>
       </form>
+      <Typography variant="body3" sx={{ mt: 2 }}>
+        Немає акаунту? <Button onClick={() => navigate('/register')}>Зареєструватися</Button>
+      </Typography>
     </Box>
+    
   );
+
 };
 
 export default LoginPage;
