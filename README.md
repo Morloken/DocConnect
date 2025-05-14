@@ -1,4 +1,6 @@
 # DocConnect
+😢The development of the site is not completed, it will be completed when there is free time.😢
+
 Website created to cut spend time and simplify communication for patient with a doctor
 To start the website, run in the root directory:
 
